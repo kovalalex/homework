@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+/**
+ * Свой класслоадер для актуальности см. defineClass
+ */
 public class MyClassLoader extends ClassLoader {
 
     @Override

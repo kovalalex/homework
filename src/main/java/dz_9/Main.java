@@ -6,10 +6,21 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Класс main
+ *
+ * @author Александр Коваленко
+ */
 public class Main {
     public static void main(String[] args) {
-        //System.out.println("тест!");
+
+        /**
+         * путь к исходнику класса
+         */
         String pathToSomeClass = "E:\\java tools\\projects\\homework\\src\\main\\java\\dz_9\\SomeClass.java";
+        /**
+         * List для хранения строк метода
+         */
         List<String> methodLines = readFromConsole();
         methodLines.forEach(System.out::println);
         writeFile(pathToSomeClass, methodLines);
@@ -22,9 +33,7 @@ public class Main {
         } catch (ClassNotFoundException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            System.out.println(e.getMessage());
-        } catch (InstantiationException e) {
+        } catch (IllegalAccessException | InstantiationException e) {
             System.out.println(e.getMessage());
         }
 
@@ -44,6 +53,12 @@ public class Main {
         return methodLines;
     }
 
+    /**
+     * Метод записи класса с обновленными строчками методов
+     *
+     * @param path
+     * @param method лист строчек
+     */
     private static void writeFile(String path, List<String> method) {
         try (FileWriter writer = new FileWriter(path);
              BufferedWriter bw = new BufferedWriter(writer)) {
@@ -63,6 +78,10 @@ public class Main {
         }
     }
 
+    /**
+     * Компиляция java файла
+     * @param path путь
+     */
     private static void compileClass(String path) {
         JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
         System.out.println(javaCompiler.run(null, null, null, path));
