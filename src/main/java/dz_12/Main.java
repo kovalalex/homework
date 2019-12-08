@@ -1,5 +1,8 @@
 package dz_12;
 
+import java.lang.reflect.Proxy;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -11,7 +14,6 @@ import java.util.Random;
  */
 public class Main {
     private static final int LOOP_COUNT = 100_000_000;
-    static javassist.ClassPool cp = javassist.ClassPool.getDefault();
 
     public static void main(String[] args) throws InterruptedException, Exception {
         //javaHeapOut();
@@ -20,15 +22,20 @@ public class Main {
 
     /**
      * Переполнение metaspace
-     * Основано на https://plumbr.io/outofmemoryerror/metaspace
-     * при -XX:MaxMetaspaceSize=20m загружено ~ 10200 классов на моей машине
+     * @author Коваленко Александр
      */
     public static void metaspaceOut() throws Exception {
-        for (int i = 0; i < LOOP_COUNT; i++) {
-            Class c = cp.makeClass("ru.innopolis.dz_12" + i).toClass();
-            System.out.println(i);
-            Thread.sleep(10);
+        List<ClassA> list = new ArrayList<>();
+        Handler handler = new Handler();
 
+        for (int i = 0; i < LOOP_COUNT; i++) {
+            String fictiousClassloaderJAR = "file:" + i;
+            URL[] fictiousClassloaderURL = new URL[]{new URL(fictiousClassloaderJAR)};
+            URLClassLoader newClassLoader = new URLClassLoader(fictiousClassloaderURL);
+            ClassA p = (ClassA) Proxy.newProxyInstance(newClassLoader, new Class[]{ClassA.class}, handler);
+            list.add(p);
+            Thread.sleep(25);
+            System.out.println(i);
         }
     }
 
