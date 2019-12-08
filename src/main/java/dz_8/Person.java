@@ -5,7 +5,7 @@ package dz_8;
  *
  * @author Александр Коваленко
  */
-public class Person implements Comparable<Person> {
+public class Person {
 
     /**
      * Поле содержащее возраст
@@ -17,26 +17,41 @@ public class Person implements Comparable<Person> {
      */
     private String name;
     /**
-     * Поле содержащее пол
+     * скрытое приватное поле
      */
-    private Sex sex;
+    private final String hide = "скрытая информация";
+    /**
+     * Поле содержащее зарплату
+     */
+    public float salary;
 
-    public Person(int age, String name, Sex sex) {
+    public Person() {
+    }
+
+    public Person(int age, String name, float salary) {
         this.age = age;
         this.name = name;
-        this.sex = sex;
+        this.salary = salary;
     }
 
     public void setAge(int age) {
         this.age = age;
     }
 
+    public String getHide() {
+        return hide;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setSex(Sex sex) {
-        this.sex = sex;
+    public float getSalary() {
+        return salary;
+    }
+
+    public void setSalary(float salary) {
+        this.salary = salary;
     }
 
     public int getAge() {
@@ -47,47 +62,13 @@ public class Person implements Comparable<Person> {
         return name;
     }
 
-    public Sex getSex() {
-        return sex;
-    }
-
-
     @Override
     public String toString() {
         return "Person{" +
                 "age=" + age +
                 ", name='" + name + '\'' +
-                ", sex=" + sex +
+                ", salary=" + salary +
+                ", hide='" + hide + '\'' +
                 '}';
     }
-
-
-    public int compareTo(Person p2) {
-
-        int x;
-        if (this.getSex().equals(Sex.MAN) && p2.getSex().equals(Sex.WOMAN)) {
-            x = -1;
-            return x;
-        }
-        if (this.getSex().equals(Sex.WOMAN) && p2.getSex().equals(Sex.MAN)) {
-            x = 1;
-            return x;
-        }
-        if (p2.getAge() - this.getAge() != 0)
-            return p2.getAge() - this.getAge();
-
-
-        return this.getName().compareTo(p2.getName());
-    }
-
-    /**
-     * ENUM со значениями пола
-     *
-     * @author Александр Коваленко
-     */
-    public enum Sex {
-        MAN,
-        WOMAN
-    }
-
 }
